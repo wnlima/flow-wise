@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Core Launch (web) - Lancamentos API",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Api/FlowWise.Services.Lancamentos.Api.csproj",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+        },
+        {
+            "name": ".NET Core Launch (web) - Consolidacao API",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/FlowWise.Services.Consolidacao/FlowWise.Services.Consolidacao.Api/FlowWise.Services.Consolidacao.Api.csproj",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+        }
+    ]
+}
