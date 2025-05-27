@@ -10,18 +10,8 @@ using FlowWise.Services.Consolidacao.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurar Serilog (sinks específicos para este microsserviço)
-builder.Host.UseSerilog((context, loggerConfiguration) =>
-{
-    loggerConfiguration
-        .ReadFrom.Configuration(context.Configuration)
-        .Enrich.FromLogContext()
-        .Enrich.WithCorrelationIdHeader()
-        .WriteTo.Console(restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information);
-});
-
-
 // Adiciona os serviços comuns do Flow Wise Core (infraestrutura compartilhada ou padronizada)
+builder.Services.AddObservability(builder.Configuration, "Consolidacao_API");
 builder.Services.AddFlowWiseCoreServices(builder.Configuration, typeof(GetSaldoDiarioQuery).Assembly);
 
 builder.Services.AddMassTransit(x =>
@@ -79,9 +69,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
-
+app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

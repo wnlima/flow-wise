@@ -1,22 +1,22 @@
-# 🚀 Flow Wise: Serviço de Consolidação
+# 📊 Flow Wise: Serviço de Consolidação
 
-Este repositório contém o código-fonte do **Serviço de Consolidação** do Projeto Flow Wise. Este microsserviço é fundamental para prover uma visão agregada e em tempo quase real do fluxo de caixa diário, otimizada para consultas e relatórios.
+Este repositório contém o código-fonte do **Serviço de Consolidação** do Projeto Flow Wise. Este microsserviço é responsável por processar os eventos de lançamentos financeiros e construir um modelo de leitura otimizado para consultas rápidas de saldos diários e relatórios de fluxo de caixa.
 
 ## ✨ Visão Geral do Serviço
 
-O **Serviço de Consolidação** atua como o **lado de consulta (leitura)** do padrão CQRS no Flow Wise. Ele não processa diretamente o registro de lançamentos, mas reage a eventos de domínio publicados pelo Serviço de Lançamentos para construir e manter uma projeção de dados (Query Model) que é otimizada para a leitura rápida do saldo diário consolidado.
+O **Serviço de Consolidação** atua como o **lado de consulta (leitura)** do padrão CQRS. Ele não recebe comandos diretamente, mas reage a eventos de domínio publicados pelo Serviço de Lançamentos (e, potencialmente, outros serviços no futuro). Ao consumir esses eventos, ele mantém uma projeção de dados (Read Model) que é otimizada para consultas de alta performance, sem a complexidade do modelo transacional de escrita.
 
 ### Responsabilidades Chave:
 
-* **Consumo de Eventos:** Ouvir e processar eventos de lançamentos (ex: `LancamentoRegistradoEvent`) publicados no RabbitMQ.
-* **Projeção de Dados:** Manter uma projeção atualizada do saldo de caixa diário consolidado em seu próprio banco de dados otimizado para leitura.
-* **Consulta de Saldo Consolidado:** Expor uma API para que Gerentes Financeiros e sistemas de BI possam consultar o saldo diário e gerar relatórios de forma performática.
-* **Resiliência:** Garantir que a consolidação de dados ocorra de forma assíncrona, sem impactar a capacidade de registro de lançamentos.
+* **Consumo de Eventos:** Inscrever-se e consumir eventos de domínio do RabbitMQ (ex: `LancamentoRegistradoEvent`, `LancamentoAtualizadoEvent`, `LancamentoExcluidoEvent`).
+* **Projeção de Dados (Read Model):** Processar os eventos recebidos para manter um estado consolidado e otimizado (ex: `SaldoDiario`).
+* **Consulta de Saldo Diário:** Oferecer a capacidade de consultar o saldo consolidado para uma data específica.
+* **Geração de Relatórios:** Gerar relatórios agregados de fluxo de caixa com base nos dados consolidados.
 
 ### Contexto no C4 Model:
 
 * No [Diagrama de Contêineres](/docs/diagrams/C4-Container.jpg), este serviço é o `Microsserviço: Serviço de Consolidação`.
-* Ele interage com o `RabbitMQ` para consumir eventos e com o `DB Consolidados (Query Model)` para persistir e consultar suas projeções.
+* Ele interage com o `DB Consolidação` para persistência do Read Model e consome eventos do `RabbitMQ`.
 
 ## 📦 Estrutura do Projeto
 
@@ -25,10 +25,10 @@ Este microsserviço segue uma arquitetura em camadas para separar responsabilida
 ```
 
 FlowWise.Services.Consolidacao/
-├── FlowWise.Services.Consolidacao.Api/             \# Projeto API REST (endpoints, controladores, DTOs de consulta)
-├── FlowWise.Services.Consolidacao.Application/     \# Camada de Aplicação (queries, handlers, orquestração de projeções)
-├── FlowWise.Services.Consolidacao.Domain/          \# Camada de Domínio (representação das projeções, regras de leitura)
-├── FlowWise.Services.Consolidacao.Infrastructure/  \# Camada de Infraestrutura (implementações de persistência com EF Core, consumo de eventos do RabbitMQ)
+├── FlowWise.Services.Consolidacao.Api/             \# Projeto API REST (endpoints, controladores, DTOs de entrada)
+├── FlowWise.Services.Consolidacao.Application/     \# Camada de Aplicação (Queries, Query Handlers, Event Consumers)
+├── FlowWise.Services.Consolidacao.Domain/          \# Camada de Domínio (Entidades do Read Model, regras de consistência de leitura)
+├── FlowWise.Services.Consolidacao.Infrastructure/  \# Camada de Infraestrutura (implementações de persistência com EF Core, configuração do MassTransit)
 └── FlowWise.Services.Consolidacao.Tests/           \# Projetos de Testes (Unitários, Integração)
 
 ````
@@ -53,21 +53,23 @@ A API estará disponível em `http://localhost:5001` (verifique `launchSettings.
 
 A documentação interativa da API deste serviço está disponível via Swagger UI quando o serviço está rodando localmente.
 
-* **Endpoint Principal:** `http://localhost:5001/api/consolidados`
+* **Endpoint Principal:** `http://localhost:5001/api/consolidacoes`
 * **Swagger UI:** `http://localhost:5001/swagger`
 
 ### Principais Endpoints:
 
-* `GET /api/consolidados?data={YYYY-MM-DD}`: Consulta o saldo consolidado para uma data específica (D-1).
-* `GET /api/consolidados/relatorio?startDate={YYYY-MM-DD}&endDate={YYYY-MM-DD}`: Gera um relatório de fluxo de caixa para um período.
+* `GET /api/consolidacoes/saldo-diario?data={YYYY-MM-DD}`: Consulta o saldo consolidado para uma data específica.
+* `GET /api/consolidacoes/relatorio-fluxo-caixa?dataInicio={YYYY-MM-DD}&dataFim={YYYY-MM-DD}`: Gera um relatório de fluxo de caixa para um período.
 
 ## 📥 Eventos Consumidos
 
-Este serviço consome os seguintes eventos de domínio do RabbitMQ:
+Este serviço consome os seguintes eventos do RabbitMQ, publicados pelo Serviço de Lançamentos, para construir e manter seu modelo de leitura consolidado:
 
-* `LancamentoRegistradoEvent`: Para processar e incluir novos lançamentos na consolidação.
-* `LancamentoAtualizadoEvent`: Para reprocessar lançamentos alterados e atualizar a consolidação.
-* `LancamentoExcluidoEvent`: Para ajustar a consolidação em caso de exclusão de lançamentos.
+* `LancamentoRegistradoEvent`
+* `LancamentoAtualizadoEvent`
+* `LancamentoExcluidoEvent`
+
+Ao consumir esses eventos, o Serviço de Consolidação atualiza o `SaldoDiario` e outros dados de projeção para refletir as mudanças no fluxo de caixa.
 
 ## 🧪 Executando Testes
 
@@ -79,7 +81,3 @@ dotnet test
 ````
 
 Para rodar todos os testes do repositório e gerar o relatório de cobertura, use o script na raiz: `..\..\coverage-report.sh`.
-
-## 🤝 Contribuindo
-
-Consulte o [guia](/CONTRIBUTING.md) principal de [URL inválido removido] para detalhes sobre nosso fluxo de trabalho, padrões de commits e diretrizes de codificação.

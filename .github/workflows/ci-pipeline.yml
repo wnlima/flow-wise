@@ -19,63 +19,17 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install EF Core Tools
       run: dotnet tool install --global dotnet-ef
 
-    - name: Set Docker Compose Project Name
-      id: set-project-name
-      run: |
-        echo "PROJECT_NAME=$(basename "$GITHUB_WORKSPACE" | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]')" >> $GITHUB_ENV
-
-    - name: Start Docker Compose Services
-      run: docker-compose -f docker-compose.yml up -d
-
-    - name: Wait for Services to be Healthy
-      run: |
-        echo "Waiting for services to become healthy..."
-        for i in {1..30}; do
-          POSTGRES_HEALTH=$(docker inspect --format='{{.State.Health.Status}}' ${PROJECT_NAME}_postgres_1 || echo "starting")
-          RABBITMQ_HEALTH=$(docker inspect --format='{{.State.Health.Status}}' ${PROJECT_NAME}_rabbitmq_1 || echo "starting")
-          REDIS_HEALTH=$(docker inspect --format='{{.State.Health.Status}}' ${PROJECT_NAME}_redis_1 || echo "starting")
-
-          echo "Postgres: $POSTGRES_HEALTH | RabbitMQ: $RABBITMQ_HEALTH | Redis: $REDIS_HEALTH"
-
-          if [ "$POSTGRES_HEALTH" = "healthy" ] && [ "$RABBITMQ_HEALTH" = "healthy" ] && [ "$REDIS_HEALTH" = "healthy" ]; then
-            echo "All services are healthy."
-            break
-          fi
-          sleep 5
-        done
-
-    - name: Apply Migrations - Lancamentos
-      run: |
-        dotnet ef database update \
-          --context LancamentosDbContext \
-          --project "src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Infrastructure" \
-          --startup-project "src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Infrastructure"
-
-    - name: Apply Migrations - Consolidacao
-      run: |
-        dotnet ef database update \
-          --context ConsolidacaoDbContext \
-          --project "src/FlowWise.Services.Consolidacao/FlowWise.Services.Consolidacao.Infrastructure" \
-          --startup-project "src/FlowWise.Services.Consolidacao/FlowWise.Services.Consolidacao.Infrastructure"
-
     - name: Run Tests with Coverage
       run: |
         chmod +x ./coverage-report.sh
         ./coverage-report.sh || { echo 'Coverage script failed.'; exit 1; }
-
-    - name: Upload Code Coverage Report
-      uses: actions/upload-artifact@v4
-      with:
-        name: code-coverage-report
-        path: CoverageReport
-        if-no-files-found: ignore

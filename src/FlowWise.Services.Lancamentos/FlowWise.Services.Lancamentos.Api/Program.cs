@@ -10,21 +10,10 @@ using FlowWise.Services.Lancamentos.Application.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, loggerConfiguration) =>
-{
-    loggerConfiguration
-        .ReadFrom.Configuration(context.Configuration)
-        .Enrich.FromLogContext()
-        .Enrich.WithCorrelationIdHeader()
-        .WriteTo.Console(restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information);
-});
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 // Adiciona os serviços comuns do Flow Wise Core (infraestrutura compartilhada ou padronizada)
+builder.Services.AddObservability(builder.Configuration, "Lancamentos_API");
 builder.Services.AddFlowWiseCoreServices(builder.Configuration, typeof(CreateLancamentoCommand).Assembly);
+
 builder.Services.ConfigureMassTransitWithRabbitMq(builder.Configuration, cfg =>
 {
     cfg.Message<LancamentoRegistradoEvent>(m => m.SetEntityName("ex.flow-wise.lancamentos.events"));
@@ -37,6 +26,10 @@ builder.Services.AddScoped<ILancamentoRepository, LancamentoRepository>();
 builder.Services.AddScoped<IDomainEventPublisher, DomainEventPublisher>();
 builder.Services.AddScoped<ILancamentoEventPublisher, MassTransitLancamentoEventPublisher>();
 
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -46,10 +39,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 try

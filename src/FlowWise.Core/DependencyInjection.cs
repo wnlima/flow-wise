@@ -7,6 +7,11 @@ using Microsoft.Extensions.Logging;
 using FlowWise.Common.Behaviors;
 using System.Reflection;
 using FluentValidation;
+using Serilog.Sinks.Grafana.Loki;
+using Serilog.Enrichers.Span;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Resources;
+using Npgsql;
 
 namespace FlowWise.Core
 {
@@ -90,6 +95,47 @@ namespace FlowWise.Core
 
                     configureBus?.Invoke(cfg);
                 });
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection AddObservability(this IServiceCollection services, IConfiguration configuration, string serviceName)
+        {
+            var version = configuration.GetValue<string>("ServiceVersion") ?? "1.0.0";
+
+            services.AddSerilog(new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .Enrich.FromLogContext()
+                .Enrich.WithCorrelationIdHeader()
+                .WriteTo.Console()
+                .WriteTo.GrafanaLoki(
+                    configuration["Loki:Uri"]!,
+                    new List<LokiLabel>()
+                    {
+                        new()
+                        {
+                            Key = "service_name",
+                            Value = serviceName
+                        },
+                        new()
+                        {
+                            Key = "using_database",
+                            Value = "true"
+                        }
+                    })
+                .Enrich.WithSpan(new SpanOptions() { IncludeOperationName = true, IncludeTags = true })
+                .CreateLogger());
+
+            services.AddOpenTelemetry()
+            .WithTracing((traceBuilder) =>
+            {
+                traceBuilder
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName: serviceName, serviceVersion: version))
+                    .AddAspNetCoreInstrumentation()
+                    .AddNpgsql()
+                    .AddOtlpExporter()
+                    .AddConsoleExporter();
             });
 
             return services;
