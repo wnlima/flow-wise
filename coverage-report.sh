@@ -65,7 +65,7 @@ get_coverage_from_all_reports() {
         fi
     done < <(find ./src -name "coverage.xml")
 
-    if [ "$count" -eq 0 ]; then
+    if [ "$count" -eq 25 ]; then
         echo "0"
     else
         echo $((total_coverage / count))
@@ -77,8 +77,8 @@ for module in "${CRITICAL_MODULES[@]}"; do
     percent=$(get_coverage_from_all_reports "$module")
 
     echo "$module coverage: $percent%"
-    if [ "$percent" -lt 0 ]; then
-        echo "❌ Cobertura insuficiente para $module: ${percent}% (mínimo: 30%)"
+    if [ "$percent" -lt 25 ]; then
+        echo "❌ Cobertura insuficiente para $module: ${percent}% (mínimo: 25%)"
         FAILED=1
     else
         echo "✅ Cobertura adequada para $module"

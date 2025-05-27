@@ -23,7 +23,7 @@ Utilizamos diferentes tipos de testes para garantir a qualidade em todas as cama
     * **Framework de Teste:** `xUnit` (preferencial), `NUnit` ou `MSTest`.
     * **Mocks/Fakes:** `Moq` / `NSubsitute` (recomendado) para isolar dependências.
 * **Localização:** Projetos de teste específicos (ex: `FlowWise.Services.Lancamentos.Tests/UnitTests/`).
-* **Cobertura de Código Alvo:** **Mínimo de 30% de cobertura de linha para a lógica de negócio crítica** na camada de Domínio e Aplicação.
+* **Cobertura de Código Alvo:** **Mínimo de 25% de cobertura de linha para a lógica de negócio crítica** na camada de Domínio e Aplicação.
 
 ### 2. Testes de Integração
 
@@ -57,7 +57,7 @@ Utilizamos diferentes tipos de testes para garantir a qualidade em todas as cama
 A cobertura de código é uma métrica importante que nos ajuda a identificar áreas do código que não estão sendo testadas.
 
 * **Política de Cobertura:**
-    * **Objetivo Mínimo:** Todos os projetos de domínio (`.Domain/`) e aplicação (`.Application/`) devem aspirar a um **mínimo de 30% de cobertura de linha** por testes unitários.
+    * **Objetivo Mínimo:** Todos os projetos de domínio (`.Domain/`) e aplicação (`.Application/`) devem aspirar a um **mínimo de 25% de cobertura de linha** por testes unitários.
     * **Obrigatoriedade em CI:** A verificação de cobertura será parte do nosso pipeline de Integração Contínua (CI). PRs que baixem a cobertura abaixo do limite estabelecido poderão ser bloqueados até que a cobertura seja restaurada ou justificada.
 * **Ferramentas C#/.NET para Cobertura:**
     * **`coverlet.collector`:** Um coletor de cobertura de código que se integra ao `dotnet test`. É a ferramenta recomendada para coletar métricas de cobertura.

@@ -1,8 +1,6 @@
 using FluentValidation.TestHelper;
 using FlowWise.Services.Lancamentos.Application.Commands;
 using FlowWise.Services.Lancamentos.Application.Validators;
-using Xunit;
-using System;
 using FlowWise.Services.Lancamentos.Domain.ValueObjects;
 
 namespace FlowWise.Services.Lancamentos.Tests.UnitTests.Application.Validators

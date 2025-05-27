@@ -1,3 +1,5 @@
+using FlowWise.Services.Consolidacao.Domain.Exceptions;
+
 namespace FlowWise.Services.Consolidacao.Domain.Entities
 {
     /// <summary>
@@ -43,12 +45,12 @@ namespace FlowWise.Services.Consolidacao.Domain.Entities
         /// </summary>
         /// <param name="data">A data para a qual o saldo diário será criado. Não pode ser futura.</param>
         /// <returns>Uma nova instância de <see cref="SaldoDiario"/>.</returns>
-        /// <exception cref="ArgumentException">Lançada se a data for futura, violando a regra RN-003.</exception>
+        /// <exception cref="ConsolidacaoDomainException">Lançada se a data for futura, violando a regra RN-003.</exception>
         public static SaldoDiario Create(DateTime data)
         {
             // RN-003: O consolidado é sempre de D-1. A projeção será para a data passada.
             if (data.Date > DateTime.Today.Date)
-                throw new ArgumentException("A data para consolidação não pode ser futura.", nameof(data));
+                throw new ConsolidacaoDomainException("A data para consolidação não pode ser futura.");
 
             return new SaldoDiario
             {
@@ -66,7 +68,7 @@ namespace FlowWise.Services.Consolidacao.Domain.Entities
         /// </summary>
         /// <param name="valor">O valor do lançamento a ser aplicado.</param>
         /// <param name="tipo">O tipo do lançamento ("Credito" ou "Debito").</param>
-        /// <exception cref="ArgumentException">Lançada se o tipo de lançamento for inválido.</exception>
+        /// <exception cref="ConsolidacaoDomainException">Lançada se o tipo de lançamento for inválido.</exception>
         public void AplicarLancamento(string tipo, decimal valor)
         {
             if (tipo.Equals("Credito", StringComparison.OrdinalIgnoreCase))
@@ -80,7 +82,7 @@ namespace FlowWise.Services.Consolidacao.Domain.Entities
             else
             {
                 // Isso nunca deveria acontecer se o TipoLancamento do Lançamento for validado na origem.
-                throw new ArgumentException("Tipo de lançamento inválido para aplicação de saldo.");
+                throw new ConsolidacaoDomainException("Tipo de lançamento inválido para aplicação de saldo.");
             }
 
             SaldoTotal = TotalCreditos - TotalDebitos;
@@ -93,7 +95,7 @@ namespace FlowWise.Services.Consolidacao.Domain.Entities
         /// </summary>
         /// <param name="valor">O valor do lançamento a ser revertido.</param>
         /// <param name="tipo">O tipo do lançamento ("Credito" ou "Debito").</param>
-        /// <exception cref="ArgumentException">Lançada se o tipo de lançamento for inválido.</exception>
+        /// <exception cref="ConsolidacaoDomainException">Lançada se o tipo de lançamento for inválido.</exception>
         public void ReverterLancamento(string tipo, decimal valor)
         {
             if (tipo.Equals("Credito", StringComparison.OrdinalIgnoreCase))
@@ -106,7 +108,7 @@ namespace FlowWise.Services.Consolidacao.Domain.Entities
             }
             else
             {
-                throw new ArgumentException("Tipo de lançamento inválido para reversão de saldo.");
+                throw new ConsolidacaoDomainException("Tipo de lançamento inválido para reversão de saldo.");
             }
 
             SaldoTotal = TotalCreditos - TotalDebitos;
