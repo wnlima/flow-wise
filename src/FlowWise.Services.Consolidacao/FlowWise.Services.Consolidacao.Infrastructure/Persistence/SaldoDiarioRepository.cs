@@ -42,7 +42,7 @@ public class SaldoDiarioRepository : ISaldoDiarioRepository
     /// <returns>Uma Task que representa a operação assíncrona, retornando o SaldoDiario ou null se não encontrado.</returns>
     public async Task<SaldoDiario?> GetByDateAsync(DateTime data)
     {
-        return await _context.SaldosDiarios.AsNoTracking().FirstOrDefaultAsync(sd => sd.Data == data.Date);
+        return await _context.SaldosDiarios.FirstOrDefaultAsync(sd => sd.Data == data.Date);
     }
 
     /// <summary>
