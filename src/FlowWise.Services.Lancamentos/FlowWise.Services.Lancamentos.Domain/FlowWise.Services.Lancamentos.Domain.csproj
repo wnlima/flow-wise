@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\FlowWise.Common\FlowWise.Common.csproj" />
+    <ProjectReference Include="../../FlowWise.Common/FlowWise.Common.csproj" />
   </ItemGroup>
 
 </Project>

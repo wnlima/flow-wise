@@ -1,0 +1,118 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Common", "FlowWise.Common\FlowWise.Common.csproj", "{10F14AF2-742A-49F0-A86A-EBCA7AF29053}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Core", "FlowWise.Core\FlowWise.Core.csproj", "{D3EAEE7E-1520-47F9-ABBE-0C18DD25311E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FlowWise.Services.Consolidacao", "FlowWise.Services.Consolidacao", "{6963854A-29C7-47F5-A69B-D3BAFA327FFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Services.Consolidacao.Domain", "FlowWise.Services.Consolidacao\FlowWise.Services.Consolidacao.Domain\FlowWise.Services.Consolidacao.Domain.csproj", "{D16E51B4-57E5-47B6-80D7-F6906CAAE14F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Services.Consolidacao.Tests.UnitTests", "FlowWise.Services.Consolidacao\FlowWise.Services.Consolidacao.Tests.UnitTests\FlowWise.Services.Consolidacao.Tests.UnitTests.csproj", "{A15D6514-C2D6-4781-BA25-9D20BBAD0E95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Services.Consolidacao.Api", "FlowWise.Services.Consolidacao\FlowWise.Services.Consolidacao.Api\FlowWise.Services.Consolidacao.Api.csproj", "{B7C7E6BE-2304-4021-A743-C9CC057F4F60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Services.Consolidacao.Tests.IntegrationTests", "FlowWise.Services.Consolidacao\FlowWise.Services.Consolidacao.Tests.IntegrationTests\FlowWise.Services.Consolidacao.Tests.IntegrationTests.csproj", "{9C950D20-FEEF-4475-B187-6AF18A3F8B93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Services.Consolidacao.Application", "FlowWise.Services.Consolidacao\FlowWise.Services.Consolidacao.Application\FlowWise.Services.Consolidacao.Application.csproj", "{B81474DB-F77A-45E7-A1C4-E0597F20547B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Services.Consolidacao.Infrastructure", "FlowWise.Services.Consolidacao\FlowWise.Services.Consolidacao.Infrastructure\FlowWise.Services.Consolidacao.Infrastructure.csproj", "{9FDB437E-0CDC-42E1-9190-F1A5E4B0707B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FlowWise.Services.Lancamentos", "FlowWise.Services.Lancamentos", "{ED38FBCA-3DC9-4BA3-935F-423B6171B473}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Services.Lancamentos.Domain", "FlowWise.Services.Lancamentos\FlowWise.Services.Lancamentos.Domain\FlowWise.Services.Lancamentos.Domain.csproj", "{CB3D7AC2-CD62-46AE-A80B-EA79A6B8D52E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Services.Lancamentos.Tests.UnitTests", "FlowWise.Services.Lancamentos\FlowWise.Services.Lancamentos.Tests.UnitTests\FlowWise.Services.Lancamentos.Tests.UnitTests.csproj", "{C2561ECB-EF3E-4E86-8921-E4B099DB3F87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Services.Lancamentos.Api", "FlowWise.Services.Lancamentos\FlowWise.Services.Lancamentos.Api\FlowWise.Services.Lancamentos.Api.csproj", "{7E8748D0-7701-4CDD-91CB-C36865565B98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Services.Lancamentos.Tests.IntegrationTests", "FlowWise.Services.Lancamentos\FlowWise.Services.Lancamentos.Tests.IntegrationTests\FlowWise.Services.Lancamentos.Tests.IntegrationTests.csproj", "{4745B6D3-49DF-4A8B-955C-7144D24F1874}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Services.Lancamentos.Application", "FlowWise.Services.Lancamentos\FlowWise.Services.Lancamentos.Application\FlowWise.Services.Lancamentos.Application.csproj", "{82C34C5A-CD4F-48D2-97A1-56BF6095E5A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowWise.Services.Lancamentos.Infrastructure", "FlowWise.Services.Lancamentos\FlowWise.Services.Lancamentos.Infrastructure\FlowWise.Services.Lancamentos.Infrastructure.csproj", "{5C25834A-308A-4B43-9A4C-8538582D2234}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10F14AF2-742A-49F0-A86A-EBCA7AF29053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10F14AF2-742A-49F0-A86A-EBCA7AF29053}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10F14AF2-742A-49F0-A86A-EBCA7AF29053}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10F14AF2-742A-49F0-A86A-EBCA7AF29053}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3EAEE7E-1520-47F9-ABBE-0C18DD25311E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3EAEE7E-1520-47F9-ABBE-0C18DD25311E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3EAEE7E-1520-47F9-ABBE-0C18DD25311E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3EAEE7E-1520-47F9-ABBE-0C18DD25311E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D16E51B4-57E5-47B6-80D7-F6906CAAE14F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D16E51B4-57E5-47B6-80D7-F6906CAAE14F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D16E51B4-57E5-47B6-80D7-F6906CAAE14F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D16E51B4-57E5-47B6-80D7-F6906CAAE14F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A15D6514-C2D6-4781-BA25-9D20BBAD0E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A15D6514-C2D6-4781-BA25-9D20BBAD0E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A15D6514-C2D6-4781-BA25-9D20BBAD0E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A15D6514-C2D6-4781-BA25-9D20BBAD0E95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7C7E6BE-2304-4021-A743-C9CC057F4F60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7C7E6BE-2304-4021-A743-C9CC057F4F60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7C7E6BE-2304-4021-A743-C9CC057F4F60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7C7E6BE-2304-4021-A743-C9CC057F4F60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C950D20-FEEF-4475-B187-6AF18A3F8B93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C950D20-FEEF-4475-B187-6AF18A3F8B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C950D20-FEEF-4475-B187-6AF18A3F8B93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C950D20-FEEF-4475-B187-6AF18A3F8B93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B81474DB-F77A-45E7-A1C4-E0597F20547B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B81474DB-F77A-45E7-A1C4-E0597F20547B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B81474DB-F77A-45E7-A1C4-E0597F20547B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B81474DB-F77A-45E7-A1C4-E0597F20547B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FDB437E-0CDC-42E1-9190-F1A5E4B0707B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FDB437E-0CDC-42E1-9190-F1A5E4B0707B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FDB437E-0CDC-42E1-9190-F1A5E4B0707B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FDB437E-0CDC-42E1-9190-F1A5E4B0707B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB3D7AC2-CD62-46AE-A80B-EA79A6B8D52E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB3D7AC2-CD62-46AE-A80B-EA79A6B8D52E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB3D7AC2-CD62-46AE-A80B-EA79A6B8D52E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB3D7AC2-CD62-46AE-A80B-EA79A6B8D52E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2561ECB-EF3E-4E86-8921-E4B099DB3F87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2561ECB-EF3E-4E86-8921-E4B099DB3F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2561ECB-EF3E-4E86-8921-E4B099DB3F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2561ECB-EF3E-4E86-8921-E4B099DB3F87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E8748D0-7701-4CDD-91CB-C36865565B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E8748D0-7701-4CDD-91CB-C36865565B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E8748D0-7701-4CDD-91CB-C36865565B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E8748D0-7701-4CDD-91CB-C36865565B98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4745B6D3-49DF-4A8B-955C-7144D24F1874}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4745B6D3-49DF-4A8B-955C-7144D24F1874}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4745B6D3-49DF-4A8B-955C-7144D24F1874}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4745B6D3-49DF-4A8B-955C-7144D24F1874}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82C34C5A-CD4F-48D2-97A1-56BF6095E5A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82C34C5A-CD4F-48D2-97A1-56BF6095E5A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82C34C5A-CD4F-48D2-97A1-56BF6095E5A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82C34C5A-CD4F-48D2-97A1-56BF6095E5A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C25834A-308A-4B43-9A4C-8538582D2234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C25834A-308A-4B43-9A4C-8538582D2234}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C25834A-308A-4B43-9A4C-8538582D2234}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C25834A-308A-4B43-9A4C-8538582D2234}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D16E51B4-57E5-47B6-80D7-F6906CAAE14F} = {6963854A-29C7-47F5-A69B-D3BAFA327FFE}
+		{A15D6514-C2D6-4781-BA25-9D20BBAD0E95} = {6963854A-29C7-47F5-A69B-D3BAFA327FFE}
+		{B7C7E6BE-2304-4021-A743-C9CC057F4F60} = {6963854A-29C7-47F5-A69B-D3BAFA327FFE}
+		{9C950D20-FEEF-4475-B187-6AF18A3F8B93} = {6963854A-29C7-47F5-A69B-D3BAFA327FFE}
+		{B81474DB-F77A-45E7-A1C4-E0597F20547B} = {6963854A-29C7-47F5-A69B-D3BAFA327FFE}
+		{9FDB437E-0CDC-42E1-9190-F1A5E4B0707B} = {6963854A-29C7-47F5-A69B-D3BAFA327FFE}
+		{CB3D7AC2-CD62-46AE-A80B-EA79A6B8D52E} = {ED38FBCA-3DC9-4BA3-935F-423B6171B473}
+		{C2561ECB-EF3E-4E86-8921-E4B099DB3F87} = {ED38FBCA-3DC9-4BA3-935F-423B6171B473}
+		{7E8748D0-7701-4CDD-91CB-C36865565B98} = {ED38FBCA-3DC9-4BA3-935F-423B6171B473}
+		{4745B6D3-49DF-4A8B-955C-7144D24F1874} = {ED38FBCA-3DC9-4BA3-935F-423B6171B473}
+		{82C34C5A-CD4F-48D2-97A1-56BF6095E5A2} = {ED38FBCA-3DC9-4BA3-935F-423B6171B473}
+		{5C25834A-308A-4B43-9A4C-8538582D2234} = {ED38FBCA-3DC9-4BA3-935F-423B6171B473}
+	EndGlobalSection
+EndGlobal
