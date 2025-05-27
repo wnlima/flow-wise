@@ -79,7 +79,3 @@ jobs:
         name: code-coverage-report
         path: CoverageReport
         if-no-files-found: ignore
-
-    - name: Teardown Docker
-      if: always()
-      run: docker-compose down
