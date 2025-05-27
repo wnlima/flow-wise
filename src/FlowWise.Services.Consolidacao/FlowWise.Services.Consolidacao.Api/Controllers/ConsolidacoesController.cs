@@ -53,7 +53,7 @@ namespace FlowWise.Services.Consolidacao.Api.Controllers
                 return BadRequest(ApiResponse.ErrorResult("A data para consulta do saldo diário não pode ser futura.", (int)HttpStatusCode.BadRequest, correlationId: Request.HttpContext.Items["CorrelationId"]?.ToString()));
             }
 
-            var query = new GetSaldoDiarioQuery(data, Request.HttpContext.Items["CorrelationId"]?.ToString());
+            var query = new GetSaldoDiarioQuery(data.ToUniversalTime(), Request.HttpContext.Items["CorrelationId"]?.ToString());
             var saldoDiarioDto = await _mediator.Send(query);
 
             if (saldoDiarioDto == null)
@@ -109,7 +109,7 @@ namespace FlowWise.Services.Consolidacao.Api.Controllers
                 return BadRequest(ApiResponse.ErrorResult("O período do relatório não pode exceder 30 dias.", (int)HttpStatusCode.BadRequest, correlationId: Request.HttpContext.Items["CorrelationId"]?.ToString()));
             }
 
-            var query = new GetRelatorioFluxoCaixaQuery(dataInicio, dataFim, Request.HttpContext.Items["CorrelationId"]?.ToString());
+            var query = new GetRelatorioFluxoCaixaQuery(dataInicio.ToUniversalTime(), dataFim.ToUniversalTime(), Request.HttpContext.Items["CorrelationId"]?.ToString());
             var relatorioDto = await _mediator.Send(query);
 
             var apiResponseData = new RelatorioFluxoCaixaResponse
