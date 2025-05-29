@@ -121,4 +121,5 @@ Este repositório utiliza GitHub Actions para Integração Contínua (CI). O pip
 ## 📞 Contato
 
 Para dúvidas, sugestões ou suporte, entre em contato com [Willian Lima](https://www.linkedin.com/in/w-lima).
+
 ![Perfil do LinkedIn](https://media.licdn.com/dms/image/v2/D4D03AQGRObzA0_NRkg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1703104875697?e=1751500800&v=beta&t=jWwem7-YUYxBoktc3ayzIMLMdT4RlMQcsh-WlFW0pTM)
