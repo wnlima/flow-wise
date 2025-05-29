@@ -65,7 +65,7 @@ get_coverage_from_all_reports() {
         fi
     done < <(find ./src -name "coverage.xml")
 
-    if [ "$count" -eq 0 ]; then
+    if [ "$count" -eq 25 ]; then
         echo "0"
     else
         echo $((total_coverage / count))
