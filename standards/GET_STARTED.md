@@ -14,15 +14,13 @@ Certifique-se de que as seguintes ferramentas e softwares estejam instalados em 
 3.  **.NET 8 SDK:** O *framework* principal para o desenvolvimento das aplicações C#.
     * [Download .NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 4.  **Editor de Código / IDE:**
-    * **Visual Studio Code (Recomendado):** Leve e extensível, com muitas extensões úteis para C# e Docker.
+    * **Visual Studio Code:** Leve e extensível, com muitas extensões úteis para C# e Docker.
         * [Download VS Code](https://code.visualstudio.com/download)
         * **Extensões Recomendadas:**
             * C# (Microsoft)
             * Docker
             * GitLens
             * EditorConfig for VS Code
-    * **Visual Studio 2022 (Alternativa):** IDE completa para desenvolvimento .NET.
-        * [Download Visual Studio](https://visualstudio.microsoft.com/downloads/)
 5.  **Cliente HTTP (Opcional, mas Recomendado):** Para testar as APIs localmente.
     * **Postman:** [Download Postman](https://www.postman.com/downloads/)
     * **Insomnia:** [Download Insomnia](https://insomnia.rest/download)
@@ -36,145 +34,142 @@ Siga os passos abaixo para configurar seu ambiente:
 Abra seu terminal ou prompt de comando e execute:
 
 ```bash
-git clone [https://github.com/wnlima/flow-wise.git](https://github.com/wnlima/flow-wise.git)
+git clone https://github.com/wnlima/flow-wise.git
 cd flow-wise
 ````
 
-### 2. Configurar Variáveis de Ambiente (Credenciais)
+### 2\. Configurar User Secrets (Credenciais)
 
-Para rodar os microsserviços localmente, você precisará configurar as strings de conexão e outras credenciais. Recomendamos usar o **.NET User Secrets** para isso, garantindo que suas credenciais não sejam versionadas no código.
+Para rodar os microsserviços localmente, você precisará configurar as strings de conexão e outras credenciais sensíveis. É **mandatório** o uso do **.NET User Secrets** para isso, garantindo que suas credenciais **não sejam versionadas** no código.
 
 #### Para o `FlowWise.Services.Lancamentos.Api`:
 
 1.  Navegue até a pasta do projeto API:
+
     ```bash
     cd src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Api
     ```
+
 2.  Inicialize os User Secrets (se ainda não o fez):
+
     ```bash
     dotnet user-secrets init
     ```
-3.  Defina os segredos necessários para o serviço de Lançamentos:
+
+3.  Defina os segredos necessários para o serviço de Lançamentos. **Substitua os valores de `flowwise_user` e `flowwise_password` por senhas fortes que você controlará localmente:**
 
     ```bash
-    dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5432;Database=flowwise_lancamentos_db;Username=flowwise_user;Password=flowwise_password"
+    dotnet user-secrets set "ConnectionStrings:PostgreSQL" "Host=localhost;Port=5432;Database=flowwise_lancamentos_db;Username=flowwise_user;Password=flowwise_password"
     dotnet user-secrets set "RabbitMQ:Host" "localhost"
-    dotnet user-secrets set "RabbitMQ:Username" "flowwise_user"
-    dotnet user-secrets set "RabbitMQ:Password" "flowwise_password"
-    dotnet user-secrets set "Redis:Connection" "localhost:6379"
+    dotnet user-secrets set "RabbitMQ:Username" "guest" # Usuário padrão do RabbitMQ para desenvolvimento
+    dotnet user-secrets set "RabbitMQ:Password" "guest" # Senha padrão do RabbitMQ para desenvolvimento
+    dotnet user-secrets set "Redis:Configuration" "localhost:6379"
     ```
 
 #### Para o `FlowWise.Services.Consolidacao.Api`:
 
 1.  Navegue até a pasta do projeto API:
+
     ```bash
     cd src/FlowWise.Services.Consolidacao/FlowWise.Services.Consolidacao.Api
     ```
+
 2.  Inicialize os User Secrets (se ainda não o fez):
+
     ```bash
     dotnet user-secrets init
     ```
-3.  Defina os segredos necessários para o serviço de Consolidação:
+
+3.  Defina os segredos necessários para o serviço de Consolidação. **Substitua os valores de `flowwise_user` e `flowwise_password` por senhas fortes que você controlará localmente:**
 
     ```bash
-    dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5432;Database=flowwise_consolidacao_db;Username=flowwise_user;Password=flowwise_password"
+    dotnet user-secrets set "ConnectionStrings:PostgreSQL" "Host=localhost;Port=5432;Database=flowwise_consolidacao_db;Username=flowwise_user;Password=flowwise_password"
     dotnet user-secrets set "RabbitMQ:Host" "localhost"
     dotnet user-secrets set "RabbitMQ:Username" "flowwise_user"
     dotnet user-secrets set "RabbitMQ:Password" "flowwise_password"
-    dotnet user-secrets set "Redis:Connection" "localhost:6379"
+    dotnet user-secrets set "Redis:Configuration" "localhost:6379"
     ```
+
+    *Para mais informações sobre User Secrets e gerenciamento de segredos em .NET, consulte a [documentação oficial da Microsoft](https://learn.microsoft.com/pt-br/aspnet/core/security/app-secrets%3Fview%3Daspnetcore-8.0%26tabs%3Dwindows).*
 
 ### 3\. Subir Dependências Locais com Docker Compose
 
 As dependências de infraestrutura (PostgreSQL, RabbitMQ, Redis) são orquestradas via Docker Compose.
 
-1.  Na raiz do repositório, execute o comando para subir os serviços em segundo plano:
-    ```bash
-    docker-compose up -d postgres rabbitmq redis
-    ```
-3.  Verifique se os contêineres subiram corretamente:
-    ```bash
-    docker-compose ps
-    ```
-    Você deve ver `healthy` ou `Up` para `postgres`, `rabbitmq` e `redis`.
+1.  Na raiz do repositório (`flow-wise/`), execute o comando para subir os serviços em segundo plano:
 
-### 4\. Rodar os Microsserviços
+    ```bash
+    docker compose up -d postgres rabbitmq redis
+    ```
 
-Você pode rodar os microsserviços diretamente da sua IDE ou via terminal:
+    *Este comando iniciará apenas os serviços `postgres`, `rabbitmq` e `redis` definidos no seu `docker-compose.yml`, além de suas dependências.*
+
+2.  Verifique se os contêineres subiram corretamente e estão em estado `healthy`:
+
+    ```bash
+    docker compose ps
+    ```
+
+    Você deve ver `healthy` ou `Up` para `flowwise-postgres`, `flowwise-rabbitmq` e `flowwise-redis`. Aguarde até que o `flowwise-postgres` esteja `healthy` antes de prosseguir com as migrações.
+
+### 4\. Executar Migrações de Banco de Dados (PostgreSQL)
+
+Após as dependências de banco de dados estarem em execução e `healthy`, aplique as migrações do Entity Framework Core para criar/atualizar os schemas dos bancos de dados de cada microsserviço.
+
+1.  **Para o Banco de Dados de Lançamentos (`flowwise_lancamentos_db`):**
+    Navegue até a raiz do repositório (`flow-wise/`) e execute:
+
+    ```bash
+    dotnet ef database update --project src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Infrastructure/FlowWise.Services.Lancamentos.Infrastructure.csproj --startup-project src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Api/FlowWise.Services.Lancamentos.Api.csproj --context LancamentosDbContext
+    ```
+
+2.  **Para o Banco de Dados de Consolidação (`flowwise_consolidacao_db`):**
+    Navegue até a raiz do repositório (`flow-wise/`) e execute:
+
+    ```bash
+    dotnet ef database update --project src/FlowWise.Services.Consolidacao/FlowWise.Services.Consolidacao.Infrastructure/FlowWise.Services.Consolidacao.Infrastructure.csproj --startup-project src/FlowWise.Services.Consolidacao/FlowWise.Services.Consolidacao.Api/FlowWise.Services.Consolidacao.Api.csproj --context ConsolidacaoDbContext
+    ```
+
+    *Estes comandos aplicarão todas as migrações pendentes, criando as tabelas necessárias no PostgreSQL.*
+
+    **Nota:** Se precisar **criar novas migrações** no futuro (após alterações no modelo de domínio), use o comando `dotnet ef migrations add [NomeDaSuaMigracao]` com os parâmetros `--project`, `--startup-project` e `--context` apropriados, como no exemplo abaixo (não execute isso agora, apenas para referência):
+
+    ```bash
+    # Exemplo para criar uma nova migração no serviço de Lançamentos
+    dotnet ef migrations add SuaNovaMigracaoLancamentos --project src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Infrastructure/FlowWise.Services.Lancamentos.Infrastructure.csproj --startup-project src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Api/FlowWise.Services.Lancamentos.Api.csproj --context LancamentosDbContext
+    ```
+
+### 5\. Rodar os Microsserviços
+
+Após as dependências e bancos de dados estarem configurados, você pode iniciar os microsserviços.
 
 #### Opção A: Via Terminal (para cada serviço)
 
-Abra um novo terminal (ou aba no terminal) para cada microsserviço que deseja rodar.
+Abra um novo terminal (ou aba no terminal) para cada microsserviço que deseja rodar. Certifique-se de estar na raiz do repositório (`flow-wise/`) antes de executar os comandos.
 
 1.  **Serviço de Lançamentos:**
 
     ```bash
-    cd src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Api
-    dotnet restore
-    dotnet run
+    dotnet run --project src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Api/
     ```
 
-    A API estará disponível em `http://localhost:5000` (ou a porta configurada). O Swagger UI em `http://localhost:5000/swagger`.
+    A API estará disponível em `http://localhost:5000`. O Swagger UI em `http://localhost:5000/swagger`.
 
 2.  **Serviço de Consolidação:**
 
     ```bash
-    cd src/FlowWise.Services.Consolidacao/FlowWise.Services.Consolidacao.Api
-    dotnet restore
-    dotnet run
+    dotnet run --project src/FlowWise.Services.Consolidacao/FlowWise.Services.Consolidacao.Api/
     ```
 
-    A API estará disponível em `http://localhost:5001` (ou a porta configurada). O Swagger UI em `http://localhost:5001/swagger`.
+    A API estará disponível em `http://localhost:5001`. O Swagger UI em `http://localhost:5001/swagger`.
 
 #### Opção B: Via Visual Studio (Se usar)
 
-1.  Abra a *solution* principal (`.sln`) no Visual Studio.
-2.  Você pode configurar múltiplos projetos de inicialização para rodar ambos os serviços simultaneamente, ou iniciá-los individualmente.
-3.  As portas serão definidas no `launchSettings.json` de cada projeto API.
-
-### 5. Executar Migrações de Banco de Dados (PostgreSQL)
-
-Cada microsserviço com persistência de dados no PostgreSQL (Lançamentos e Consolidação) precisará ter suas migrações aplicadas. **É essencial que cada microsserviço tenha um `DbContext` configurado para o seu banco de dados específico (`flowwise_lancamentos_db` e `flowwise_consolidacao_db` respectivamente).**
-
-#### 5.2. Para criar novos migrations:
-
-1.  Certifique-se de que o serviço `postgres` esteja `healthy` via `docker-compose ps`.
-2.  Navegue até a raiz do repositório:
-3.  Execute o comando para criar a migration no projeto:
-    ```bash
-    dotnet ef migrations add sua_migration \
-        --context LancamentosDbContext \
-        --output-dir "Migrations" \
-        --project "src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Infrastructure" \
-        --startup-project "src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Infrastructure"
-    ```
-4.  Execute o comando para criar a migration no projeto:
-    ```bash
-    dotnet ef migrations add sua_migration \
-        --context ConsolidacaoDbContext \
-        --output-dir "Migrations" \
-        --project "src/FlowWise.Services.Consolidacao/FlowWise.Services.Consolidacao.Infrastructure" \
-        --startup-project "src/FlowWise.Services.Consolidacao/FlowWise.Services.Consolidacao.Infrastructure"
-    ```
-#### 5.2. Para o Banco de Dados de Lançamentos:
-
-1.  Certifique-se de que o serviço `postgres` esteja `healthy` via `docker-compose ps`.
-2.  Navegue até a raiz do repositório:
-3.  Execute o comando para aplicar as migrações no banco de dados `flowwise_lancamentos_db`:
-    ```bash
-    dotnet ef database update \
-        --context LancamentosDbContext \
-        --project "src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Infrastructure" \
-        --startup-project "src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Infrastructure"
-    ```
-4.  Execute o comando para aplicar as migrações no banco de dados `flowwise_lancamentos_db`:
-    ```bash
-    dotnet ef database update \
-        --context ConsolidacaoDbContext \
-        --project "src/FlowWise.Services.Consolidacao/FlowWise.Services.Consolidacao.Infrastructure" \
-        --startup-project "src/FlowWise.Services.Consolidacao/FlowWise.Services.Consolidacao.Infrastructure"
-    ```
-
+1.  Abra a *solution* principal (`FlowWise.sln`) localizada na pasta `src/` no Visual Studio.
+2.  No Solution Explorer, clique com o botão direito na Solution `FlowWise.sln` -\> "Set Startup Projects...".
+3.  Selecione "Multiple startup projects" e marque `FlowWise.Services.Lancamentos.Api` e `FlowWise.Services.Consolidacao.Api` para "Start".
+4.  Pressione `F5` ou clique no botão "Start" para iniciar ambos os serviços simultaneamente.
+5.  As portas serão definidas no `Properties/launchSettings.json` de cada projeto API.
 
 ### 6\. Testar as APIs
 
@@ -187,6 +182,27 @@ Com os serviços rodando, você pode usar seu cliente HTTP preferido (Postman, I
 
 Para rodar todos os testes automatizados do projeto:
 
-```bash
-dotnet test src/
-```
+1.  Navegue para a raiz do repositório (`flow-wise/`).
+2.  Execute o comando:
+    ```bash
+    dotnet test src/
+    ```
+    *Este comando executará todos os testes unitários e de integração definidos nos projetos de teste.*
+
+-----
+
+## 🛑 Parando o Projeto
+
+Para parar os serviços e limpar os recursos do Docker:
+
+1.  **Pare os Microsserviços:**
+    Se você os iniciou via terminal, simplesmente feche os terminais ou pressione `Ctrl+C` em cada um. Se usou o Visual Studio, pare a depuração.
+
+2.  **Pare e Remova os Contêineres Docker:**
+    Na raiz do repositório (`flow-wise/`), execute:
+
+    ```bash
+    docker compose down
+    ```
+
+    *Este comando irá parar e remover os contêineres, redes e volumes criados pelo `docker-compose up`.*

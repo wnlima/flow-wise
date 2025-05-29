@@ -14,135 +14,111 @@ Este repositório contém o código-fonte do **Produto Mínimo Viável (MVP)** d
 
 * **Arquitetura:** Microsserviços com Domain-Driven Design (DDD), CQRS e Event Sourcing.
 * **Linguagem & Framework:** C# / .NET 8+.
-* **Bancos de Dados:** PostgreSQL.
+* **Bancos de Dados:** PostgreSQL (exclusivamente).
 * **Comunicação Assíncrona:** RabbitMQ como Message Broker.
 * **Cache & Resiliência:** Redis para otimização de performance e suporte à resiliência.
 * **Orquestração:** Conteinerização com Docker e preparação para implantação em Kubernetes.
-* **Infraestrutura como Código (IaC):** Terraform para gestão de infraestrutura (Pós-MVP).
-* **Segurança:** Foco em Secure by Design, com preparação para integração SSO e Pentests robustos.
-* **Observabilidade:** Preparado para integração 'plug-and-play' com ferramentas de monitoramento líderes de mercado.
+* **Infraestrutura como Código (IaC):** Terraform para gestão de infraestrutura.
+* **Segurança:** Foco em Secure by Design, autenticação JWT e preparação para integração SSO.
+* **Observabilidade:** OpenTelemetry como padrão para traces, logs e métricas, visando integração facilitada com ferramentas de mercado (Datadog, Elastic, Dynatrace).
 
-Para um detalhamento completo da visão estratégica, requisitos, decisões arquiteturais e padrões, consulte a [Documentação Estratégica Completa](/docs/Flow%20Wise%20-%20Visão%20Estratégica%20e%20Arquitetura%20da%20Solução.pdf).
+## 📖 Sumário da Documentação
 
+Para facilitar a navegação e o entendimento do projeto, consulte os seguintes documentos essenciais:
 
-## 📦 Estrutura do Repositório
+* **🏛️ Decisões Arquiteturais Chave (ARCHITECTURE\_DECISIONS.md):** Um resumo conciso das principais escolhas de arquitetura e padrões de design do Flow Wise, explicando o *porquê* de cada decisão.
+    * [🏛️ ARQUITETURA\_DECISIONS.md](ARCHITECTURE_DECISIONS.md)
+* **Visão Estratégica Completa (PDF):** Aprofunde-se no documento estratégico principal que detalha o escopo, requisitos de negócio e a arquitetura geral do Flow Wise.
+    * [📄 Flow Wise - Visão Estratégica e Arquitetura da Solução.pdf](docs/Flow%20Wise%20-%20Visão%20Estratégica%20e%20Arquitetura%20da%20Solução.pdf)
+* **Guias Essenciais para Desenvolvedores:**
+    * [🚀 Inicie Aqui! (GET\_STARTED.md)](standards/GET_STARTED.md): Guia passo a passo para configurar seu ambiente de desenvolvimento e executar o projeto localmente.
+    * [🤝 Como Contribuir (CONTRIBUTING.md)](standards/CONTRIBUTING.md): Entenda nosso fluxo de trabalho, padrões de commit e o processo para Pull Requests.
+    * [🧑‍💻 Diretrizes de Codificação (CODING\_GUIDELINES.md)](standards/CODING_GUIDELINES.md): Conheça os padrões de código C#/.NET, boas práticas e princípios de design aplicados no projeto.
+    * [🧪 Diretrizes de Testes (TESTING\_GUIDELINES.md)](standards/TESTING_GUIDELINES.md): Saiba mais sobre nossa estratégia de testes, os tipos de testes (unitários, integração), e as políticas de cobertura de código.
+* **Detalhes da Infraestrutura:**
+    * [⚙️ Infraestrutura do Projeto (INFRASTRUCTURE.md)](standards/INFRASTRUCTURE.md): Documentação sobre a configuração de Docker, Kubernetes, Infraestrutura como Código com Terraform e a estratégia multi-cloud.
+* **Documentação dos Microsserviços:**
+    * [💸 Serviço de Lançamentos (README.md)](src/FlowWise.Services.Lancamentos/README.md): Documentação detalhada sobre o microsserviço responsável pelo registro, consulta, edição e exclusão de lançamentos financeiros.
+    * [📊 Serviço de Consolidação (README.md)](src/FlowWise.Services.Consolidacao/README.md): Documentação específica do microsserviço que processa e consolida os dados para relatórios de fluxo de caixa.
 
-Este é um *monorepo* que organiza os diferentes microsserviços e a documentação do projeto.
+## 🏛️ Estrutura do Repositório
+
+Este é um *monorepo* que organiza os diferentes microsserviços, bibliotecas compartilhadas e a documentação do projeto, conforme a estrutura abaixo:
 
 ```
+
 .
 ├── .github/                      \# Configurações do GitHub Actions
-│   └── workflows/                \# Pipelines de CI/CD
-├── docs/                         \# Documentação de alto nível e decisões arquiteturais
-│   ├── 01-vision-strategy/       \# Visão geral, requisitos funcionais e não-funcionais
-│   ├── 02-arquitetura-software/  \# Detalhes da arquitetura (C4 Containers, ADRs)
-│   ├── diagrams/                 \# Arquivos Draw.io e imagens dos diagramas C4
-│   └── Flow Wise - Visão Estratégica e Arquitetura da Solução.pdf \# Cópia do documento principal em PDF
-├── infra/                        \# Scripts de Infraestrutura como Código (Terraform)
-├── standards/                    \# Padrões organizacionais e diretrizes de contribuição
-│   ├── CONTRIBUTING.md           \# Guia de contribuição (incluindo commits semânticos e Git Flow)
-│   ├── GET\_STARTED.md            \# Guia de início rápido para novos desenvolvedores
-│   ├── INFRASTRUCTURE.md         \# Detalhes e configuração da infraestrutura
-│   ├── CODING\_GUIDELINES.md      \# Padrões de codificação C\#/.NET
-│   └── TESTING\_GUIDELINES.md     \# Diretrizes de testes e cobertura de código
-├── src/                          \# Código-fonte dos microsserviços
+│   └── workflows/                \# Pipelines de CI/CD (ci-pipeline.yml)
+├── docs/                         \# Documentação de alto nível, diagramas e decisões arquiteturais
+│   ├── diagrams/                 \# Arquivos Draw.io e imagens dos diagramas C4 (Contexto, Contêineres)
+│   └── Flow Wise - Visão Estratégica e Arquitetura da Solução.pdf \# Documento principal em PDF
+├── infra/                        \# Scripts de Infraestrutura como Código (Terraform) e configuração de serviços (PostgreSQL init)
+├── standards/                    \# Padrões organizacionais e diretrizes (CONTRIBUTING.md, GET\_STARTED.md, etc.)
+├── src/                          \# Código-fonte dos microsserviços e bibliotecas
+│   ├── FlowWise.sln              \# Arquivo da Solução .NET principal
+│   ├── FlowWise.Core/            \# Biblioteca Core (IoC, Shared Kernel, Middlewares, Behaviors, Configurações Base)
+│   ├── FlowWise.Common/          \# Biblioteca com DTOs, Exceções e Value Objects comuns
 │   ├── FlowWise.Services.Lancamentos/  \# Microsserviço de gestão de lançamentos
-│   │   ├── FlowWise.Services.Lancamentos.Api/ \# Projeto da API
-│   │   ├── FlowWise.Services.Lancamentos.Domain/ \# Projeto de Domínio (DDD)
-│   │   ├── FlowWise.Services.Lancamentos.Infrastructure/ \# Projeto de Infraestrutura/Dados
-│   │   └── FlowWise.Services.Lancamentos.Tests/ \# Projetos de Testes
-│   ├── FlowWise.Services.Consolidacao/ \# Microsserviço de consolidação de fluxo de caixa
-│   │   ├── FlowWise.Services.Consolidacao.Api/
-│   │   ├── FlowWise.Services.Consolidacao.Domain/
-│   │   ├── FlowWise.Services.Consolidacao.Infrastructure/
-│   │   └── FlowWise.Services.Consolidacao.Tests/
-│   └── FlowWise.Common/          \# Biblioteca de classes comuns/compartilhadas
-└── docker-compose.yml            \# Arquivo para orquestração local de serviços
+│   │   ├── FlowWise.Services.Lancamentos.Api/           \# Camada de API (Controllers, Requests, Responses)
+│   │   ├── FlowWise.Services.Lancamentos.Application/   \# Camada de Aplicação (Commands, Queries, Handlers, Validators, Events)
+│   │   ├── FlowWise.Services.Lancamentos.Domain/        \# Camada de Domínio (Entities, Value Objects, Domain Events, Interfaces de Repositório)
+│   │   ├── FlowWise.Services.Lancamentos.Infrastructure/\# Camada de Infraestrutura (Persistence com EF Core, Migrations, Event Publishers)
+│   │   ├── FlowWise.Services.Lancamentos.Tests.UnitTests/    \# Testes unitários para o serviço de lançamentos
+│   │   └── FlowWise.Services.Lancamentos.Tests.IntegrationTests/ \# Testes de integração para o serviço de lançamentos
+│   └── FlowWise.Services.Consolidacao/ \# Microsserviço de consolidação de fluxo de caixa
+│       ├── FlowWise.Services.Consolidacao.Api/          \# Camada de API (Controllers, Requests, Responses)
+│       ├── FlowWise.Services.Consolidacao.Application/  \# Camada de Aplicação (Event Consumers, Queries, Handlers)
+│       ├── FlowWise.Services.Consolidacao.Domain/       \# Camada de Domínio (Entities, Interfaces de Repositório)
+│       ├── FlowWise.Services.Consolidacao.Infrastructure/\# Camada de Infraestrutura (Persistence com EF Core, Migrations)
+│       ├── FlowWise.Services.Consolidacao.Tests.UnitTests/   \# Testes unitários para o serviço de consolidação
+│       └── FlowWise.Services.Consolidacao.Tests.IntegrationTests/ \# Testes de integração para o serviço de consolidação
+├── README.md                     \# Este arquivo
+├── coverage-report.sh            \# Script para geração de relatório de cobertura de testes
+└── docker-compose.yml            \# Arquivo para orquestração local de serviços (PostgreSQL, RabbitMQ, Redis)
 
 ````
 
-## 📚 Documentação Estratégica Completa
+## ▶️ Rodando o Projeto Localmente (POC)
 
-A documentação completa do Projeto Flow Wise, incluindo a visão estratégica, requisitos de negócio e não-funcionais detalhados, decisões arquiteturais e padrões organizacionais, está disponível:
+Para instruções detalhadas sobre como configurar seu ambiente de desenvolvimento e executar os microsserviços e suas dependências (PostgreSQL, RabbitMQ, Redis) localmente usando Docker, consulte o guia:
 
-* **PDF:** Uma cópia estática da versão mais recente pode ser encontrada em [`docs/Flow Wise - Visão Estratégica e Arquitetura da Solução.pdf`](/docs/Flow%20Wise%20-%20Visão%20Estratégica%20e%20Arquitetura%20da%20Solução.pdf).
+* **[🚀 Inicie Aqui! (GET\_STARTED.md)](standards/GET_STARTED.md)**
 
-## ▶️ Primeiros Passos para Desenvolvedores (Inicie Aqui!)
+### Acesso às APIs (Swagger)
 
-Para novos desenvolvedores ou contribuidores, recomendamos começar lendo o guia **[Inicie Aqui!](standards/GET_STARTED.md)** para configurar seu ambiente e entender o fluxo de trabalho.
+Com os serviços rodando localmente:
 
-## 🤝 Como Contribuir
-
-Valorizamos as contribuições e incentivamos a colaboração. Por favor, consulte o nosso guia detalhado **[Como Contribuir](standards/CONTRIBUTING.md)** para entender nosso fluxo de trabalho de desenvolvimento, padrões de *commits semânticos*, diretrizes de codificação e processo de *Pull Request*.
-
-## 🐳 Rodando o Projeto Localmente (POC)
-
-Este projeto utiliza Docker para facilitar o desenvolvimento local, isolando dependências e garantindo um ambiente consistente.
-
-### Pré-requisitos
-
-* [Docker Desktop](https://www.docker.com/products/docker-desktop) instalado e em execução.
-* [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) instalado.
-
-### Passos
-
-1.  **Clone o Repositório:**
-    ```bash
-    git clone [https://github.com/wnlima/flow-wise.git](https://github.com/wnlima/flow-wise.git)
-    cd flow-wise
-    ```
-2.  **Construa e Suba os Contêineres de Suporte:**
-    O arquivo `docker-compose.yml` já contém as configurações para o PostgreSQL, RabbitMQ e Redis.
-    ```bash
-    docker-compose up -d postgres rabbitmq redis
-    ```
-3.  **Construa e Execute os Microsserviços:**
-    Navegue até a pasta de cada microsserviço (ex: `src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Api/`) e use os comandos .NET para rodar. Ou, para rodar todos:
-    ```bash
-    # Para rodar o serviço de Lançamentos
-    cd src/FlowWise.Services.Lancamentos/FlowWise.Services.Lancamentos.Api
-    dotnet run
-    # Abra um novo terminal para rodar o serviço de Consolidação
-    cd src/FlowWise.Services.Consolidacao/FlowWise.Services.Consolidacao.Api
-    dotnet run
-    ```
-    *Para uma experiência Docker completa para os microsserviços, consulte o `docker-compose.yml` e o `GET_STARTED.md`.*
-
-### Acesso às APIs (POC)
-
-Com os serviços rodando localmente, você pode acessar as APIs via Swagger:
-
-* **Serviço de Lançamentos API:** `http://localhost:5000/swagger` (ou a porta configurada localmente)
-* **Serviço de Consolidação API:** `http://localhost:5001/swagger` (ou a porta configurada localmente)
+* **Serviço de Lançamentos API:** `http://localhost:5000/swagger` (ou a porta configurada em `launchSettings.json`)
+* **Serviço de Consolidação API:** `http://localhost:5001/swagger` (ou a porta configurada em `launchSettings.json`)
 
 ## 🧪 Executando Testes
 
-Para executar os testes unitários e de integração de todos os serviços:
+Para executar os testes unitários e de integração de todos os serviços e gerar relatórios de cobertura:
 
+* **[🧪 Diretrizes de Testes (TESTING\_GUIDELINES.md)](standards/TESTING_GUIDELINES.md)**
+
+Resumidamente, na raiz do projeto:
 ```bash
 dotnet test src/
+./coverage-report.sh
 ````
-
-Para mais detalhes sobre a estratégia de testes e cobertura de código, consulte o **[Guia de Testes](/standards/TESTING_GUIDELINES.md)**.
 
 ## 🔒 Gerenciamento de Dados Sensíveis
 
-**ATENÇÃO:** No ambiente de desenvolvimento local e para o POC, credenciais podem ser gerenciadas via `User Secrets` do .NET para fins de conveniência. **Em ambientes de produção, é mandatório o uso de soluções de *Secrets Management* da nuvem** (ex: Azure Key Vault, AWS Secrets Manager, HashiCorp Vault), conforme detalhado nas [Diretrizes de Segurança](/standards/CODING_GUIDELINES.md) (será abordado em `standards/CODING_GUIDELINES.md`).
+**ATENÇÃO:** No ambiente de desenvolvimento local, utilize o **User Secrets** do .NET. Para ambientes de Produção, é **mandatório** o uso de soluções de *Secrets Management* da nuvem (ex: Azure Key Vault, AWS Secrets Manager). Consulte as [🧑‍💻 Diretrizes de Codificação](standards/CODING_GUIDELINES.md) para mais detalhes.
 
 ## ⚙️ Pipelines de CI/CD (GitHub Actions)
 
-Este repositório utiliza GitHub Actions para automatizar os pipelines de Integração Contínua (CI). As configurações estão em `.github/workflows/`. O pipeline realizará:
+Este repositório utiliza GitHub Actions para Integração Contínua (CI). O pipeline (`.github/workflows/ci-pipeline.yml`) automatiza:
 
   * Build dos projetos.
-  * Execução de testes.
-  * Análise estática de código.
-  * Build de imagens Docker.
-  * (Em futuras fases) Deployment automatizado.
+  * Execução de testes e verificação de cobertura mínima.
+  * (Futuras etapas) Análise estática, build de imagens Docker e deployment.
 
 -----
 
 ## 📞 Contato
 
-Para dúvidas, sugestões ou suporte, entre em contato com [Willian Lima][Willian Lima](https://www.linkedin.com/in/w-lima)
-
-[![Perfil do LinkedIn](https://media.licdn.com/dms/image/v2/D4D03AQGRObzA0_NRkg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1703104875697?e=1751500800&v=beta&t=jWwem7-YUYxBoktc3ayzIMLMdT4RlMQcsh-WlFW0pTM)](https://www.linkedin.com/in/w-lima)
+Para dúvidas, sugestões ou suporte, entre em contato com [Willian Lima](https://www.linkedin.com/in/w-lima).
+![Perfil do LinkedIn](https://media.licdn.com/dms/image/v2/D4D03AQGRObzA0_NRkg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1703104875697?e=1751500800&v=beta&t=jWwem7-YUYxBoktc3ayzIMLMdT4RlMQcsh-WlFW0pTM)
