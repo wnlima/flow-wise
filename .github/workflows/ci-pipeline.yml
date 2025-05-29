@@ -9,27 +9,15 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  build:
+
     runs-on: ubuntu-latest
 
-    env:
-      DOTNET_VERSION: '8.0.x'
-      PATH: $PATH:/home/runner/.dotnet/tools
-      ASPNETCORE_ENVIRONMENT: Development
-
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-
-    - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v3
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-
-    - name: Install EF Core Tools
-      run: dotnet tool install --global dotnet-ef
-
-    - name: Run Tests with Coverage
-      run: |
-        chmod +x ./coverage-report.sh
-        ./coverage-report.sh || { echo 'Coverage script failed.'; exit 1; }
+        dotnet-version: 8.0.x
+    - name: Test
+      run: chmod +x ./coverage-report.sh && ./coverage-report.sh
